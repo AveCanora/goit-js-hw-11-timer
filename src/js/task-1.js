@@ -1,23 +1,20 @@
 class CountdownTimer {
   idInterval = null;
   constructor({ selector, targetDate }) {
+    this.refs = {
+      refTimer: document.querySelector(this.selector),
+      h2: document.querySelector('.h2'),
+      days: document.querySelector('[data-value="days"]'),
+      hours: document.querySelector('[data-value="hours"]'),
+      mins: document.querySelector('[data-value="mins"]'),
+      secs: document.querySelector('[data-value="secs"]'),
+    };
     this.targetDate = targetDate;
     this.start();
   }
-  refs = {
-    refTimer: document.querySelector(this.selector),
-    h2: document.querySelector('.h2'),
-    days: document.querySelector('[data-value="days"]'),
-    hours: document.querySelector('[data-value="hours"]'),
-    mins: document.querySelector('[data-value="mins"]'),
-    secs: document.querySelector('[data-value="secs"]'),
-  };
 
   start() {
     const startTime = this.targetDate;
-    //     alert(); //дни
-    // alert(date.getMonth()); //месяцы
-    // alert(date.getFullYear()); //
     this.refs.h2.textContent = `to the ${this.targetDate.getDate()}.${
       this.targetDate.getMonth() + 1
     }.${this.targetDate.getFullYear()}`;
@@ -27,23 +24,22 @@ class CountdownTimer {
       const { days, hours, mins, secs } = getTimesComponents(deltaTime);
       const sum = Number(days) + Number(hours) + Number(mins) + Number(secs);
       if (sum <= 0) {
-        this.refs.days.textContent = 0;
-        this.refs.hours.textContent = 0;
-        this.refs.mins.textContent = 0;
-        this.refs.secs.textContent = 0;
+        this.updateTimer();
         this.stop();
       } else {
-        // console.log(`${days}::${hours}::${mins}::${secs}`);
-        this.refs.days.textContent = days;
-        this.refs.hours.textContent = hours;
-        this.refs.mins.textContent = mins;
-        this.refs.secs.textContent = secs;
+        this.updateTimer(days, hours, mins, secs);
       }
     }, 1000);
   }
   stop() {
     clearInterval(this.idInterval);
     this.idInterval = null;
+  }
+  updateTimer(days = 0, hours = 0, mins = 0, secs = 0) {
+    this.refs.days.textContent = days;
+    this.refs.hours.textContent = hours;
+    this.refs.mins.textContent = mins;
+    this.refs.secs.textContent = secs;
   }
 }
 
